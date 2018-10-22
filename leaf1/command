@@ -1,0 +1,15 @@
+ip link add vxlan200 type vxlan id 200 dstport 4789 local 10.0.0.1 nolearning
+ip link set vxlan200 mtu 9000
+ip link set vxlan200 up
+vconfig add ens3 200
+ip link set dev ens3 up
+ip link set dev ens3.200 up
+vconfig add ens4 200
+ip link set dev ens4 up
+ip link set dev ens4.200 up
+brctl addbr br-200
+brctl stp br-200 off
+brctl addif br-200 ens3.200
+brctl addif br-200 vxlan200
+ip link set dev br-200 up
+ip link set dev ens10 up
